@@ -174,7 +174,7 @@ This is the persistence layer, which holds the storage systems. It consists of s
 ## Notes & Future Improvements 
 
 Due to environment constraints, this implementation stores and processes video files locally.
-However, the system was architected with adaptability in mind, making it ready to integrate cloud storage providers such as **AWS S3**, **Google Cloud Storage**, or **Azure Blob**.
+However, the system was architected with adaptability in mind, making it compatible to integrate cloud storage providers in the future such as **AWS S3**, **Google Cloud Storage**, or **Azure Blob**.
 
 Adapting it would require a few changes in the `Uploader Service`, `Processor Service` and `Stream Service` to handle file uploads, fetch files for processing, and streaming URLs.
 
