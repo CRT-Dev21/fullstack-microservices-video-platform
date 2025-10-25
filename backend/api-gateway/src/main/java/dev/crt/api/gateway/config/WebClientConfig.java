@@ -7,9 +7,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
-    private static final String CATALOG_SERVICE_BASE_URL = "http://localhost:8082/api/v1/catalog";
+    private static final String CATALOG_SERVICE_BASE_URL = "http://catalog-service:8082/api/v1/catalog";
 
-    private static final String USER_SERVICE_BASE_URL = "http://localhost:8081/api/v1/users";
+    private static final String USER_SERVICE_BASE_URL = "http://user-service:8081/api/v1/users";
 
     @Bean
     public WebClient catalogServiceWebClient(){
