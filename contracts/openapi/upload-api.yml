@@ -1,0 +1,142 @@
+openapi: 3.0.4
+info:
+  title: Uploader Service API
+  version: v1
+  description: API for handling file uploads (videos and avatars), utilizing Spring WebFlux for reactive I/O and delegating processing to Kafka.
+servers:
+  - url: /api/v1/upload
+    description: Base URL for the file upload service.
+tags:
+  - name: Files
+    description: File upload operations.
+
+paths:
+  /:
+    post:
+      tags:
+        - Files
+      summary: Initiates the upload and asynchronous processing of a new video.
+      description: Returns 202 Accepted, indicating the upload was successful and video processing has started via the Kafka pipeline.
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: X-Creator-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Creator ID (injected from JWT by the Gateway).
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - title
+                - description
+                - image
+                - video
+              properties:
+                title:
+                  type: string
+                  description: Title of the video.
+                description:
+                  type: string
+                  description: Description of the video.
+                image:
+                  type: string
+                  format: binary
+                  description: Video thumbnail/image file.
+                video:
+                  type: string
+                  format: binary
+                  description: Original video file.
+      responses:
+        '202':
+          description: Upload accepted. Processing has started.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Video processing started.
+        '400':
+          description: Bad Request. Missing form parts or invalid input format.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error. Failure in the storage system or Kafka pipeline.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /avatars:
+    post:
+      tags:
+        - Files
+      summary: Uploads a user's avatar image.
+      description: Returns the URL where the avatar can be accessed.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - avatar
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+                  description: Avatar image file.
+      responses:
+        '200':
+          description: Avatar uploaded successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avatarUrl:
+                    type: string
+                    description: Relative path or public URL of the uploaded avatar.
+                    example: avatars/a3b4c5d6_my_image.png
+        '400':
+          description: Bad Request. Missing 'avatar' form part or invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error. Failure in the storage system (StorageException).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Expected JWT in the Authorization header: Bearer <token>"
+
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Standardized error response structure.
+      properties:
+        message:
+          type: string
+          example: "Missing form part or invalid input format. Check required fields."
+        errorCode:
+          type: string
+          example: "VALIDATION_001"

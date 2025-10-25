@@ -1,0 +1,328 @@
+openapi: 3.0.4
+info:
+  title: User Service API
+  version: v1
+  description: API for user management, authentication (JWT), and creator metadata.
+servers:
+  - url: /api/v1
+    description: Base URL for the user service
+tags:
+  - name: Authentication
+    description: Registration and login operations.
+  - name: Users
+    description: Obtaining user information and profiles.
+
+paths:
+  /users/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User created successfully.
+        '409':
+          description: The email provided is already registered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid request or format.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/login:
+    post:
+      tags:
+        - Authentication
+      summary: Log in and generate a JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token for authentication.
+        '401':
+          description: Invalid credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/me:
+    get:
+      tags:
+        - Users
+      summary: Obtains the information of the authenticated user (own profile).
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: X-Creator-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: User ID (extracted from the JWT by the Gateway).
+      responses:
+        '200':
+          description: User information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized.
+        '404': 
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+  /users/{creatorId}:
+    get:
+      tags:
+        - Users
+      summary: Gets a creator's public information by their ID.
+      parameters:
+        - name: creatorId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Creator ID.
+      responses:
+        '200':
+          description: Creator information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: Creator not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid creator ID format.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+  /users/batch:
+    get:
+      tags:
+        - Users
+      summary: Efficiently fetches details from multiple creators (Internal/Gateway Use).
+      description: Endpoint designed to be consumed by the API Gateway or other microservices for data enrichment in read operations. It allows you to retrieve public information from multiple creators with a single request.
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+          style: form
+          explode: false 
+          description: Comma-separated list of creator IDs (e.g. id1,id2,id3).
+      responses:
+        '200':
+          description: List of creator details.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreatorDetailsResponse'
+        '400':
+          description: Invalid UUID format in ID list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/avatars:
+    put:
+      tags:
+        - Users
+      summary: Updates the authenticated user's avatar URL.
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: X-Creator-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: User ID (extracted from the JWT by the Gateway).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvatarUpdateRequest'
+      responses:
+        '200':
+          description: Avatar URL updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avatarUrl:
+                    type: string
+                    format: url
+                    description: The new avatar URL.
+        '401':
+          description: Unauthorized.
+        '404':
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      tags:
+        - Users
+      summary: Serves the user's avatar image (From the local file system).
+      description: "Note: In a production project, this function should be delegated to a CDN or dedicated storage service."
+      parameters:
+        - name: path
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Relative path of the avatar file.
+      responses:
+        '200':
+          description: Avatar image served successfully.
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters.
+
+components:
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "JWT expected in Authorization: Bearer <token> header"
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          example: john_doe
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        password:
+          type: string
+          example: strongPassword123
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        password:
+          type: string
+          example: strongPassword123
+    UserResponse:
+      type: object
+      properties:
+        username:
+          type: string
+          example: john_doe
+        avatarUrl:
+          type: string
+          format: url
+          nullable: true
+          example: "avatars/user-id.png"
+    CreatorDetailsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+          example: jane_creator
+        avatarUrl:
+          type: string
+          format: url
+          nullable: true
+          example: "avatars/creator-id.png"
+    AvatarUpdateRequest:
+      type: object
+      required:
+        - avatarUrl
+      properties:
+        avatarUrl:
+          type: string
+          format: url
+          example: "avatars/new-avatar.png"
+    ErrorResponse:
+      type: object
+      description: Standardized error response structure.
+      properties:
+        message:
+          type: string
+          example: "User not found"
+        errorCode:
+          type: string
+          example: "USER_001"

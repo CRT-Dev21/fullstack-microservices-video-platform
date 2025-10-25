@@ -1,0 +1,221 @@
+openapi: 3.0.4
+info:
+  title: Microservices API Gateway (BFF)
+  description: |
+    API Gateway acting as a **Backend-for-Frontend (BFF)**.
+    This service is responsible for **data aggregation** (calling Catalog and User Services), **response transformation**, and **authentication** (via Spring Security + JWT).
+    
+    The goal is to provide enriched responses (`EnrichedVideoMetadata`) to the client, minimizing frontend calls and simplifying data consumption.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Base URL for the API Gateway
+
+security:
+  - jwtAuth: []
+
+tags:
+  - name: Catalog Aggregation
+    description: Endpoints that combine video metadata with user information.
+
+paths:
+  /catalog/enriched-videos:
+    get:
+      tags:
+        - Catalog Aggregation
+      summary: Get videos for the homepage or search results.
+      description: |
+        This endpoint calls the **Catalog Service** for paged videos and performs a batch call to the **User Service** to attach creator details (`username`, `avatarUrl`) to each video. This ensures the client receives all necessary data in a single request.
+      parameters:
+        - name: page
+          in: query
+          description: Page number to retrieve (0-based).
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: Number of videos per page.
+          schema:
+            type: integer
+            default: 20
+        - name: query
+          in: query
+          description: Optional search term to filter videos by title or description.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with a list of enriched videos and pagination metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrichedVideosResponse'
+        '500':
+          description: Internal Server Error due to failure in communication with a downstream microservice (Catalog or User Service).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /catalog/enriched-related-videos:
+    get:
+      tags:
+        - Catalog Aggregation
+      summary: Get related videos based on a video title.
+      description: |
+        Fetches related videos from the **Catalog Service** and enriches them with creator information via a batch call to the **User Service**.
+      parameters:
+        - name: title
+          in: query
+          required: true
+          description: Title of the current video used to find related videos.
+          schema:
+            type: string
+        - name: currentVideoId
+          in: query
+          required: true
+          description: ID of the current video to be excluded from the related results.
+          schema:
+            type: string
+            format: uuid
+        - name: limit
+          in: query
+          description: Maximum number of related videos to return.
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: List of enriched and related videos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrichedVideosResponse'
+        '500':
+          description: Internal Server Error due to failure in communication with a downstream microservice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Standardized error response structure.
+      properties:
+        message:
+          type: string
+          example: "Failed to communicate with Catalog Service. Details: Connection refused"
+        errorCode:
+          type: string
+          example: SERVICE_UNAVAILABLE
+      required:
+        - message
+        - errorCode
+
+    CreatorDetails:
+      type: object
+      description: Basic creator details retrieved from the User Service.
+      properties:
+        creatorId:
+          type: string
+          format: uuid
+          description: Unique ID of the creator.
+        username:
+          type: string
+          description: Visible username.
+        avatarUrl:
+          type: string
+          description: File path of the creator's avatar.
+      required:
+        - creatorId
+        - username
+        - avatarUrl
+
+    VideoMetadata:
+      type: object
+      description: Base video metadata as returned by the Catalog Service.
+      properties:
+        videoId:
+          type: string
+          format: uuid
+          description: Unique ID of the video.
+        creatorId:
+          type: string
+          format: uuid
+          description: ID of the creator.
+        title:
+          type: string
+        description:
+          type: string
+        thumbnailUrl:
+          type: string
+          description: File path of the video thumbnail.
+        videoUrls:
+          type: object
+          additionalProperties:
+            type: string
+            format: url
+          description: "Map of URLs by resolution (e.g., 720p: url_720)."
+        duration:
+          type: string
+          description: Video duration formatted as HH:MM:SS (e.g., 01:23:45).
+          example: 00:05:30
+        status:
+          type: string
+          enum: [READY, PROCESSING, FAILED]
+      required:
+        - videoId
+        - creatorId
+        - title
+        - description
+        - thumbnailUrl
+        - videoUrls
+        - duration
+        - status
+
+    EnrichedVideoMetadata:
+      allOf:
+        - $ref: '#/components/schemas/VideoMetadata'
+        - type: object
+          description: VideoMetadata enriched with CreatorDetails.
+          properties:
+            creator:
+              $ref: '#/components/schemas/CreatorDetails'
+          required:
+            - creator
+
+    EnrichedVideosResponse:
+      type: object
+      description: Paged response structure with enriched video content.
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnrichedVideoMetadata'
+        page:
+          type: integer
+          description: The current page number (0-based).
+        size:
+          type: integer
+          description: The size of the current page.
+        totalElements:
+          type: integer
+          description: Total number of elements across all pages.
+        totalPages:
+          type: integer
+          description: Total number of available pages.
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages

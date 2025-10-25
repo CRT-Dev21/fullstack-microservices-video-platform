@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c22d5674-fc91-4564-80c2-aaa2f2d4c85c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/frontend/video-platform/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/video-platform/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/video-platform/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/video-platform/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/video-platform/src/app/app.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/video-platform/src/app/app.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/video-platform/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/video-platform/src/styles.css" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="package-info" />
+        <option value="Record" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/frontend/video-platform" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="333rzk6hiVMheS0hWWAyJZ2ALXf" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.CatalogServiceApplication.executor": "Run",
+    "Application.StreamServiceApplication.executor": "Run",
+    "Application.UserServiceApplication.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/CRT/Proyectos/backend/fullstack-microservices-video-platform",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\CRT\Proyectos\backend\fullstack-microservices-video-platform\uploader-service\src\main\resources" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="dev.crt.notification.service.kafka.events" />
+      <recent name="dev.crt.notification.service.kafka.consumer" />
+      <recent name="dev.crt.catalog.service.kafka.events" />
+      <recent name="dev.crt.processor.service.kafka.producer" />
+      <recent name="dev.crt.processor.service.kafka.events" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.StreamServiceApplication">
+    <configuration name="CatalogServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="dev.crt.catalog.service.CatalogServiceApplication" />
+      <module name="catalog-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="dev.crt.catalog.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StreamServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="dev.crt.stream.service.StreamServiceApplication" />
+      <module name="stream-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="dev.crt.stream.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="dev.crt.user.service.UserServiceApplication" />
+      <module name="user-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="dev.crt.user.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.StreamServiceApplication" />
+        <item itemvalue="Application.CatalogServiceApplication" />
+        <item itemvalue="Application.UserServiceApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c22d5674-fc91-4564-80c2-aaa2f2d4c85c" name="Changes" comment="" />
+      <created>1758556860365</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1758556860365</updated>
+    </task>
+    <servers />
+  </component>
+</project>

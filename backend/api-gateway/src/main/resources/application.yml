@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: user-service
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/v1/users/**
+            - id: catalog-service
+              uri: http://localhost:8082
+              predicates:
+                - Path=/api/v1/catalog/**
+            - id: uploader-service
+              uri: http://localhost:8083
+              predicates:
+                - Path=/api/v1/upload/**
+            - id: stream-service
+              uri: http://localhost:8085
+              predicates:
+                - Path=/api/v1/stream/**
+            - id: notification-service
+              uri: ws://localhost:8086
+              predicates:
+                - Path=/notifications
+
+jwt:
+  secret: U2VjcmV0S2V5Rm9yRnVsbHN0YWNrTWljcm9zZXJ2aWNlc1ZpZGVvUGxhdGZvcm1Qcm9qZWN0
