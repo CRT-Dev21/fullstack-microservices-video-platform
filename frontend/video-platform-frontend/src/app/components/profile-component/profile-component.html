@@ -1,0 +1,35 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="avatar-section">
+      <img [src]="safeAvatarUrl" alt="Avatar" class="avatar-img" />
+      <label class="avatar-upload">
+        Change image
+        <input type="file" accept="image/*" (change)="onAvatarChange($event)" hidden />
+      </label>
+    </div>
+
+    <div class="user-info">
+      <h2>{{ username }}</h2>
+      <p class="user-subtitle">Creator at VideoSphere</p>
+    </div>
+  </div>
+
+  <div class="videos-section">
+    <h3>My videos</h3>
+
+    <div class="video-list">
+      <div class="video-item" *ngFor="let video of videos" (click)="playVideo(video)">
+        <div class="video-thumbnail-wrapper">
+          <img [src]="video.safeThumbnailUrl" alt="{{ video.title }}" class="video-thumbnail" />
+          <span class="duration-overlay">{{ video.duration }}</span>
+        </div>
+        <div class="video-info">
+          <h4>{{ video.title }}</h4>
+          <p>{{ video.description | truncate:80 }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Loading videos...</div>
+  </div>
+</div>

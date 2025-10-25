@@ -1,0 +1,54 @@
+<div class="dashboard-container">
+  <h2>Upload panel</h2>
+
+  <form (ngSubmit)="uploadVideo()" class="upload-form">
+
+    <label>Title</label>
+    <input type="text" [(ngModel)]="title" name="title" placeholder="Write the title..." required>
+
+    <label>Description</label>
+    <textarea [(ngModel)]="description" name="description" placeholder="Describe your video..." required></textarea>
+
+    <label><b>Image</b></label>
+    <div class="drop-zone"
+         [class.active]="isDraggingImage"
+         (dragover)="onDragOver($event, 'image')"
+         (dragleave)="onDragLeave('image')"
+         (drop)="onDrop($event, 'image')"
+         (click)="selectFile('image')">
+
+      <i class="fa-solid fa-image"></i>
+      <p *ngIf="!imageFile">Tap or drag your image</p>
+      <p *ngIf="imageFile" class="file-name">{{ imageFile.name }}</p>
+    </div>
+    <input type="file"
+           id="imageInput"
+           accept="image/*"
+           hidden
+           (change)="onFileSelect($event, 'image')">
+
+    <label><b>Video</b></label>
+    <div class="drop-zone"
+         [class.active]="isDraggingVideo"
+         (dragover)="onDragOver($event, 'video')"
+         (dragleave)="onDragLeave('video')"
+         (drop)="onDrop($event, 'video')"
+         (click)="selectFile('video')">
+
+      <i class="fa-solid fa-video"></i>
+      <p *ngIf="!videoFile">Tap or drag your video</p>
+      <p *ngIf="videoFile" class="file-name">{{ videoFile.name }}</p>
+    </div>
+    <input type="file"
+           id="videoInput"
+           accept="video/*"
+           hidden
+           (change)="onFileSelect($event, 'video')">
+
+    <button type="submit" class="upload-btn">Upload video</button>
+  </form>
+
+  <div *ngIf="notification" class="toast" [ngClass]="notification.type">
+    {{ notification.message }}
+  </div>
+</div>

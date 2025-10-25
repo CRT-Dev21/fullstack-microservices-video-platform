@@ -1,0 +1,39 @@
+<div class="video-catalog-container">
+  <div class="video-grid" (scroll)="onScroll($event)">
+    <div class="video-card" *ngFor="let video of videos$ | async" (click)="playVideo(video)">
+      <div class="video-thumbnail-wrapper">
+        <img [src]="video.safeThumbnailUrl" alt="{{ video.title }}" class="video-thumbnail" />
+        <span class="duration-overlay">{{ video.duration }}</span>
+      </div>
+      <div class="card-info-content">
+        <a 
+          class="creator-avatar-link" 
+          [routerLink]="['/channel', video.creator.creatorId]" 
+          (click)="$event.stopPropagation()"
+        >
+          <img 
+            [src]="video.safeCreatorAvatarUrl" 
+            alt="{{ video.creator.username }}" 
+            class="creator-avatar" 
+          />
+        </a>
+        
+        <div class="text-details">
+          <h2 class="video-title-home">{{ video.title }}</h2>
+          
+          <a 
+            class="creator-link" 
+            [routerLink]="['/channel', video.creator.creatorId]" 
+            (click)="$event.stopPropagation()"
+          >
+            {{ video.creator.username }}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Loading videos...</div>
+    <div *ngIf="error" class="error-message">{{ error }}</div> 
+    
+  </div>
+</div>

@@ -1,0 +1,163 @@
+.profile-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  color: #e0e0e0;
+  font-family: 'Poppins', sans-serif;
+  background: #121212;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.avatar-img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 3px solid #00bfa6;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.avatar-upload {
+  display: inline-block;
+  background: linear-gradient(90deg, #0a84b5, #00b28b);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.avatar-upload:hover {
+  background: linear-gradient(90deg, #02daab, #099fda);
+}
+
+.user-info h2 {
+  font-size: 26px;
+  margin: 0;
+  color: #fff;
+}
+
+.user-subtitle {
+  color: #aaa;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.videos-section h3 {
+  font-size: 20px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.video-item {
+  display: flex;
+  align-items: flex-start;
+  background: #1e1e1e;
+  padding: 12px;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.video-item:hover {
+  transform: scale(1.01);
+  background: #222;
+}
+
+.video-thumbnail {
+  width: 220px;
+  height: 125px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.video-thumbnail-wrapper {
+  position: relative;
+}
+
+.duration-overlay {
+  position: absolute;
+  right: 8px; 
+  bottom: 8px; 
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  z-index: 5;
+}
+
+.video-info h4 {
+  font-size: 18px;
+  color: #fff;
+  margin: 0 0 5px 0;
+  margin-left: 18px;
+}
+
+.video-info p {
+  color: #ccc;
+  font-size: 14px;
+  margin-bottom: 8px;
+  margin-left: 18px;
+}
+
+.video-duration {
+  color: #00bfa6;
+  font-size: 13px;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 15px;
+  color: #aaa;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .video-item {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .video-thumbnail {
+    width: 100%;
+    height: auto;
+    margin: 0 0 10px 0;
+  }
+
+  .video-info {
+    text-align: center;
+  }
+}

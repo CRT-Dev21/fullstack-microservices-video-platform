@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="welcome-header">
+    <h1>Welcome to VideoSphere</h1>
+    <img src="img/video-sphere-logo.png" alt="VideoSphere Logo" class="logo-icon">
+  </div>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form (ngSubmit)="onSubmit()">
+      <input [(ngModel)]="email" name="email" placeholder="Email" required />
+      <input [(ngModel)]="password" name="password" type="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p *ngIf="error" class="error">{{ error }}</p>
+    <p>Don't have an account? <a routerLink="/register">Sign up</a></p>
+  </div>
+</div>

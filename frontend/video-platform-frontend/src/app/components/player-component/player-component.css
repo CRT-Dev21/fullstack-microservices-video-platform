@@ -1,0 +1,261 @@
+.player-page-layout {
+    display: flex;
+    max-width: 1400px; 
+    margin: 20px auto;
+    padding: 0 20px;
+    gap: 20px;
+    font-family: Arial, sans-serif;
+    color: #fff;
+}
+
+.main-content-column {
+    flex-grow: 1; 
+    min-width: 0; 
+}
+
+.player-container {
+    background: #181818;
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; 
+    height: 0;
+}
+
+.video-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    border-radius: 8px 8px 0 0;
+}
+
+.overlay-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+.settings-btn {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.settings-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #282828;
+    padding: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+    min-width: 150px; 
+    display: flex;
+    flex-direction: column;
+    gap: 0px; 
+    z-index: 100; 
+}
+
+.settings-menu label {
+    font-size: 0.8rem;
+    color: #999;
+    padding: 5px 15px; 
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.settings-menu select {
+    padding: 5px;
+    border-radius: 3px;
+    background: #3a3a3a;
+    color: white;
+    border: 1px solid #555;
+    cursor: pointer;
+}
+
+.video-info {
+    padding: 15px;
+}
+
+.video-title {
+    font-size: 1.8rem;
+    margin: 0 0 10px 0;
+    color: #fff;
+}
+
+.video-description {
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.creator-info {
+    border-top: 1px solid #333;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.creator-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+}
+
+.creator-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 2px solid #00bfa6;
+}
+
+.related-videos-sidebar {
+    width: 380px; 
+    flex-shrink: 0;
+    height: calc(100vh - 40px); 
+    overflow-y: auto; 
+    padding-right: 10px; 
+    color: #e0e0e0;
+}
+
+.related-videos-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+.related-videos-sidebar::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+
+.related-videos-sidebar h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #fff;
+    border-bottom: 1px solid #333;
+    padding-bottom: 8px;
+    position: sticky; 
+    top: 0;
+    background: #121212; 
+    z-index: 20;
+}
+
+.related-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.video-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    cursor: pointer; 
+}
+
+.video-item:hover {
+    background-color: #222;
+}
+
+.video-thumbnail-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.video-thumbnail-related {
+    width: 160px; 
+    height: 90px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.duration-overlay {
+    position: absolute;
+    right: 5px; 
+    bottom: 5px; 
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    z-index: 5;
+}
+
+.video-details-related {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.video-title-related {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: #fff;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+.creator-name-related {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.loading-related, .error-related {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+@media (max-width: 1024px) {
+    .player-page-layout {
+        flex-direction: column;
+        padding: 0 10px;
+        gap: 10px;
+    }
+    
+    .video-wrapper {
+        padding-bottom: 56.25%; 
+    }
+
+    .video-title {
+        font-size: 1.5rem;
+    }
+    
+    .related-videos-sidebar {
+        width: 100%; 
+        height: auto; 
+        overflow-y: visible;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .related-videos-sidebar h3 {
+        position: static;
+    }
+
+    .video-thumbnail-related {
+        width: 120px; 
+        height: 67.5px;
+    }
+}

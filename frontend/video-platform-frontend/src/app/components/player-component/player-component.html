@@ -1,0 +1,60 @@
+<div class="player-page-layout">
+  
+  <div class="main-content-column">
+    <div class="player-container">
+      <div class="video-wrapper">
+        <video #videoPlayer controls class="video-player"></video>
+
+        <div class="overlay-controls">
+          <button class="settings-btn" (click)="toggleSettingsMenu()">⚙️</button>
+          <div class="settings-menu" *ngIf="showSettingsMenu">
+            <label>Quality</label>
+            <select [(ngModel)]="currentQuality" (change)="onQualityChange()">
+              <option *ngFor="let quality of availableQualities" [value]="quality">
+                {{ quality }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-info">
+        <h2 class="video-title">{{ title }}</h2>
+        <p class="video-description">{{ description }}</p>
+
+        <div class="creator-info" *ngIf="creatorId">
+          <a [routerLink]="['/channel', creatorId]" class="creator-link" style="cursor: pointer;">
+            <img [src]="creatorAvatarUrl" alt="{{ creatorName }}" class="creator-avatar" />
+            <span>{{ creatorName }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="related-videos-sidebar" (scroll)="onScroll($event)"> 
+    <h3>Recommended Videos</h3>
+
+    <div class="related-list">
+      <div class="video-item" 
+           *ngFor="let video of relatedVideos$ | async" 
+           (click)="playVideo(video)"
+           style="cursor: pointer;">
+           
+        <div class="video-thumbnail-wrapper">
+          <img [src]="video.safeThumbnailUrl" alt="{{ video.title }}" class="video-thumbnail-related" />
+          <span class="duration-overlay">{{ video.duration }}</span>
+        </div>
+        
+        <div class="video-details-related">
+          <h4 class="video-title-related">{{ video.title }}</h4>
+          <span class="creator-name-related">{{ video.creator.username }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="isLoadingRelated" class="loading-related">Cargando más videos...</div>
+    <div *ngIf="relatedError" class="error-related">{{ relatedError }}</div>
+    
+  </div>
+</div>

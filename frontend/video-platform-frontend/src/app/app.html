@@ -1,0 +1,11 @@
+<app-navbar-component *ngIf="showNavbar" (search)="onSearch($event)"></app-navbar-component>
+
+<main class="app-content">
+  <router-outlet></router-outlet>
+</main>
+
+<app-notification-component
+  *ngIf="notification"
+  [message]="notification.message"
+  [type]="notification.status">
+</app-notification-component>
